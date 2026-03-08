@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Garden</title>
+  <style>
+    :root {
+      --bg: #f4f1eb;
+      --text: #2a2a2a;
+      --green: #3d6b32;
+      --green-hover: #2e5226;
+      --green-light: #aab3a3;
+      --border: #c4b99a;
+      --ground: #dde8cc;
+      --path-col: #ccc1a6;
+      --panel: #ffffff;
+      --unknown: #8e8e8e;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Georgia, 'Times New Roman', serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    header {
+      text-align: center;
+      padding: 2.5rem 1rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    header h1 {
+      font-size: 2rem;
+      color: var(--green);
+      font-weight: normal;
+      letter-spacing: 0.06em;
+    }
+
+    header p {
+      color: #8a7f6e;
+      font-style: italic;
+      margin-top: 0.3rem;
+      font-size: 0.95rem;
+    }
+
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 0.75rem;
+      padding: 1.5rem 1rem;
+    }
+
+    .tab-btn {
+      padding: 0.55rem 1.75rem;
+      border: 1.5px solid var(--border);
+      background: transparent;
+      font-family: Georgia, serif;
+      font-size: 0.95rem;
+      border-radius: 3px;
+      cursor: pointer;
+      color: var(--text);
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+
+    .tab-btn:hover { background: var(--green-light); }
+
+    .tab-btn.active {
+      background: var(--green);
+      color: white;
+      border-color: var(--green);
+    }
+
+    .layout {
+      display: flex;
+      gap: 1.5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.5rem 3rem;
+      align-items: flex-start;
+    }
+
+    .garden-view {
+      display: none;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .garden-view.active { display: block; }
+
+    .map-wrap {
+      background: var(--ground);
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .map-wrap svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .map-hint {
+      text-align: center;
+      font-size: 0.8rem;
+      color: #a09585;
+      font-style: italic;
+      margin-top: 0.6rem;
+    }
+
+    /* ── Sidebar ─────────────────────────────────── */
+    .sidebar {
+      width: 268px;
+      flex-shrink: 0;
+      position: sticky;
+      top: 1rem;
+    }
+
+    .info-card {
+      background: var(--panel);
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      padding: 1.25rem;
+      min-height: 180px;
+    }
+
+    .info-empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 140px;
+      color: #b0a898;
+      font-style: italic;
+      font-size: 0.9rem;
+      text-align: center;
+      padding: 1rem;
+    }
+
+    .plant-header {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      margin-bottom: 1rem;
+    }
+
+    .badge {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+
+    .plant-name {
+      font-size: 1.1rem;
+      font-weight: normal;
+      line-height: 1.3;
+    }
+
+    .plant-name.is-unknown { color: #888; font-style: italic; }
+
+    .names-block {
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #eee;
+    }
+
+    .name-row {
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+      margin-bottom: 0.3rem;
+      font-size: 0.88rem;
+    }
+
+    .lang {
+      font-size: 0.68rem;
+      font-weight: bold;
+      letter-spacing: 0.12em;
+      color: #9a9080;
+      min-width: 22px;
+    }
+
+    .name-it { font-style: italic; }
+    .name-none { color: #bbb; }
+
+    .meta-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #9a9080;
+      margin-bottom: 0.2rem;
+    }
+
+    .meta-val {
+      font-size: 0.88rem;
+      color: #5a5550;
+      line-height: 1.55;
+      margin-bottom: 0.85rem;
+    }
+
+    .unknown-note {
+      background: #f7f4ed;
+      border-left: 3px solid var(--border);
+      border-radius: 3px;
+      padding: 0.6rem 0.75rem;
+      font-size: 0.82rem;
+      color: #8a8070;
+      line-height: 1.4;
+    }
+
+    /* ── Legend ──────────────────────────────────── */
+    .legend {
+      background: var(--panel);
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      padding: 1rem 1.25rem;
+      margin-top: 1rem;
+    }
+
+    .legend-title {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #9a9080;
+      margin-bottom: 0.75rem;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.25rem 0.3rem;
+      cursor: pointer;
+      border-radius: 3px;
+      font-size: 0.88rem;
+      transition: background 0.15s;
+    }
+
+    .legend-item:hover { background: var(--green-light); }
+
+    .legend-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* ── SVG interactivity ───────────────────────── */
+    .pm {
+      cursor: pointer;
+      transition: filter 0.18s;
+    }
+
+    .pm:hover { filter: brightness(0.88); }
+
+    .pm.lit {
+      filter: drop-shadow(0 0 7px rgba(50,90,40,0.75)) brightness(0.88);
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>My Garden</h1>
+</header>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('front',this)">Front Garden</button>
+  <button class="tab-btn"        onclick="switchTab('back',this)">Back Garden</button>
+</div>
+
+<div class="layout">
+
+  <!-- ══ FRONT GARDEN MAP ══════════════════════════════════════════ -->
+  <div class="garden-view active" id="view-front">
+    <div class="map-wrap">
+      <svg viewBox="0 0 780 300" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="ivy-hatch" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(40)">
+            <line x1="0" y1="0" x2="0" y2="9" stroke="#2a5225" stroke-width="2.2" stroke-opacity="0.45"/>
+          </pattern>
+        </defs>
+
+        <!-- Ground -->
+        <rect width="780" height="300" fill="#dde8cc"/>
+
+        <!-- Entrance / path gap -->
+        <rect x="424" y="0" width="66" height="300" fill="#ccc1a6"/>
+        <text x="457" y="158" text-anchor="middle" font-size="10" fill="#a09080"
+              font-style="italic" transform="rotate(-90,457,158)">entrance</text>
+
+        <!-- Left section background -->
+        <rect x="8" y="8" width="408" height="284" rx="5"
+              fill="#cde0bb" stroke="#afc898" stroke-width="1.5"/>
+
+        <!-- 1 · English Ivy strip -->
+        <g class="pm" data-g="front" data-id="1" onclick="pick('front',1)">
+          <rect x="16" y="16" width="392" height="74" rx="3"
+                fill="#3a6b30" fill-opacity="0.72"/>
+          <rect x="16" y="16" width="392" height="74" rx="3"
+                fill="url(#ivy-hatch)" fill-opacity="0.35"/>
+          <text x="212" y="58" text-anchor="middle" font-size="16"
+                font-weight="bold" fill="white" pointer-events="none">1</text>
+        </g>
+
+        <!-- 2 · Hydrangea (left) -->
+        <g class="pm" data-g="front" data-id="2" onclick="pick('front',2)">
+          <ellipse cx="115" cy="190" rx="84" ry="74"
+                   fill="#6b5f9a" fill-opacity="0.72"/>
+          <text x="115" y="195" text-anchor="middle" font-size="16"
+                font-weight="bold" fill="white" pointer-events="none">2</text>
+        </g>
+
+        <!-- 2 · Hydrangea (right) -->
+        <g class="pm" data-g="front" data-id="2" onclick="pick('front',2)">
+          <ellipse cx="318" cy="190" rx="84" ry="74"
+                   fill="#6b5f9a" fill-opacity="0.72"/>
+          <text x="318" y="195" text-anchor="middle" font-size="16"
+                font-weight="bold" fill="white" pointer-events="none">2</text>
+        </g>
+
+        <!-- Right section background -->
+        <rect x="498" y="8" width="274" height="284" rx="5"
+              fill="#cde0bb" stroke="#afc898" stroke-width="1.5"/>
+
+        <!-- 4 · Rhododendron (left) -->
+        <g class="pm" data-g="front" data-id="4" onclick="pick('front',4)">
+          <circle cx="548" cy="158" r="44" fill="#a83228" fill-opacity="0.78"/>
+          <text x="548" y="163" text-anchor="middle" font-size="16"
+                font-weight="bold" fill="white" pointer-events="none">4</text>
+        </g>
+
+        <!-- 3 · Saucer Magnolia -->
+        <g class="pm" data-g="front" data-id="3" onclick="pick('front',3)">
+          <circle cx="635" cy="158" r="52" fill="#c785a8" fill-opacity="0.8"/>
+          <text x="635" y="163" text-anchor="middle" font-size="16"
+                font-weight="bold" fill="white" pointer-events="none">3</text>
+        </g>
+
+        <!-- 4 · Rhododendron (right) -->
+        <g class="pm" data-g="front" data-id="4" onclick="pick('front',4)">
+          <circle cx="716" cy="158" r="42" fill="#a83228" fill-opacity="0.78"/>
+          <text x="716" y="163" text-anchor="middle" font-size="16"
+                font-weight="bold" fill="white" pointer-events="none">4</text>
+        </g>
+
+        <!-- Direction label -->
+        <text x="390" y="292" text-anchor="middle" font-size="10"
+              fill="#909080" font-style="italic">↓ street</text>
+      </svg>
+    </div>
+    <p class="map-hint">Click on a plant to see its details</p>
+  </div>
+
+  <!-- ══ BACK GARDEN MAP ═══════════════════════════════════════════ -->
+  <div class="garden-view" id="view-back">
+    <div class="map-wrap">
+      <svg viewBox="0 0 530 690" xmlns="http://www.w3.org/2000/svg">
+
+        <!-- Ground -->
+        <rect width="530" height="690" fill="#dde8cc"/>
+
+        <!-- Main boundary -->
+        <rect x="8" y="8" width="514" height="670" rx="5"
+              fill="#cde0bb" stroke="#afc898" stroke-width="1.5"/>
+
+        <!-- ── LEFT BORDER · Plant 4 (unknown climber) ── -->
+        <g class="pm" data-g="back" data-id="4" onclick="pick('back',4)">
+          <rect x="8" y="8" width="54" height="550" rx="4"
+                fill="#8e8e8e" fill-opacity="0.28"/>
+          <circle cx="35" cy="42"  r="14" fill="#8e8e8e" fill-opacity="0.58"/>
+          <circle cx="35" cy="82"  r="14" fill="#8e8e8e" fill-opacity="0.58"/>
+          <circle cx="35" cy="122" r="14" fill="#8e8e8e" fill-opacity="0.58"/>
+          <circle cx="35" cy="162" r="14" fill="#8e8e8e" fill-opacity="0.58"/>
+          <circle cx="35" cy="202" r="14" fill="#8e8e8e" fill-opacity="0.58"/>
+          <circle cx="35" cy="242" r="14" fill="#8e8e8e" fill-opacity="0.58"/>
+          <circle cx="35" cy="282" r="14" fill="#8e8e8e" fill-opacity="0.58"/>
+          <circle cx="35" cy="322" r="14" fill="#8e8e8e" fill-opacity="0.58"/>
+          <circle cx="35" cy="362" r="14" fill="#8e8e8e" fill-opacity="0.58"/>
+          <circle cx="35" cy="402" r="14" fill="#8e8e8e" fill-opacity="0.58"/>
+          <circle cx="35" cy="442" r="14" fill="#8e8e8e" fill-opacity="0.58"/>
+          <circle cx="35" cy="482" r="14" fill="#8e8e8e" fill-opacity="0.58"/>
+          <circle cx="35" cy="522" r="12" fill="#8e8e8e" fill-opacity="0.58"/>
+          <text x="35" y="276" text-anchor="middle" font-size="15"
+                font-weight="bold" fill="white" pointer-events="none">4</text>
+        </g>
+
+        <!-- ── RIGHT BORDER · Plant 5 (unknown climber) ── -->
+        <g class="pm" data-g="back" data-id="5" onclick="pick('back',5)">
+          <rect x="468" y="8" width="54" height="610" rx="4"
+                fill="#7a7a8a" fill-opacity="0.28"/>
+          <circle cx="495" cy="38"  r="13" fill="#7a7a8a" fill-opacity="0.58"/>
+          <circle cx="495" cy="76"  r="13" fill="#7a7a8a" fill-opacity="0.58"/>
+          <circle cx="495" cy="114" r="13" fill="#7a7a8a" fill-opacity="0.58"/>
+          <circle cx="495" cy="152" r="13" fill="#7a7a8a" fill-opacity="0.58"/>
+          <circle cx="495" cy="190" r="13" fill="#7a7a8a" fill-opacity="0.58"/>
+          <circle cx="495" cy="228" r="13" fill="#7a7a8a" fill-opacity="0.58"/>
+          <circle cx="495" cy="266" r="13" fill="#7a7a8a" fill-opacity="0.58"/>
+          <circle cx="495" cy="304" r="13" fill="#7a7a8a" fill-opacity="0.58"/>
+          <circle cx="495" cy="342" r="13" fill="#7a7a8a" fill-opacity="0.58"/>
+          <circle cx="495" cy="380" r="13" fill="#7a7a8a" fill-opacity="0.58"/>
+          <circle cx="495" cy="418" r="13" fill="#7a7a8a" fill-opacity="0.58"/>
+          <circle cx="495" cy="456" r="13" fill="#7a7a8a" fill-opacity="0.58"/>
+          <circle cx="495" cy="494" r="13" fill="#7a7a8a" fill-opacity="0.58"/>
+          <circle cx="495" cy="532" r="13" fill="#7a7a8a" fill-opacity="0.58"/>
+          <circle cx="495" cy="570" r="11" fill="#7a7a8a" fill-opacity="0.58"/>
+          <circle cx="495" cy="606" r="10" fill="#7a7a8a" fill-opacity="0.58"/>
+          <text x="495" y="308" text-anchor="middle" font-size="15"
+                font-weight="bold" fill="white" pointer-events="none">5</text>
+        </g>
+
+        <!-- Plant 5 also appears bottom-left -->
+        <g class="pm" data-g="back" data-id="5" onclick="pick('back',5)">
+          <rect x="8" y="556" width="54" height="80" rx="4"
+                fill="#7a7a8a" fill-opacity="0.28"/>
+          <circle cx="35" cy="576" r="12" fill="#7a7a8a" fill-opacity="0.58"/>
+          <circle cx="35" cy="614" r="12" fill="#7a7a8a" fill-opacity="0.58"/>
+        </g>
+
+        <!-- ── TOP · Plant 8 · three grass clumps (unknown) ── -->
+        <!-- clump A -->
+        <g class="pm" data-g="back" data-id="8" onclick="pick('back',8)">
+          <ellipse cx="160" cy="40" rx="50" ry="26" fill="#909090" fill-opacity="0.62"/>
+          <line x1="138" y1="40" x2="128" y2="18" stroke="#686868" stroke-width="1.6" stroke-linecap="round"/>
+          <line x1="152" y1="40" x2="145" y2="16" stroke="#686868" stroke-width="1.6" stroke-linecap="round"/>
+          <line x1="160" y1="40" x2="160" y2="14" stroke="#686868" stroke-width="1.6" stroke-linecap="round"/>
+          <line x1="170" y1="40" x2="176" y2="16" stroke="#686868" stroke-width="1.6" stroke-linecap="round"/>
+          <line x1="182" y1="40" x2="193" y2="18" stroke="#686868" stroke-width="1.6" stroke-linecap="round"/>
+          <text x="160" y="46" text-anchor="middle" font-size="13"
+                font-weight="bold" fill="white" pointer-events="none">8</text>
+        </g>
+        <!-- clump B -->
+        <g class="pm" data-g="back" data-id="8" onclick="pick('back',8)">
+          <ellipse cx="288" cy="40" rx="50" ry="26" fill="#909090" fill-opacity="0.62"/>
+          <line x1="266" y1="40" x2="256" y2="18" stroke="#686868" stroke-width="1.6" stroke-linecap="round"/>
+          <line x1="280" y1="40" x2="273" y2="16" stroke="#686868" stroke-width="1.6" stroke-linecap="round"/>
+          <line x1="288" y1="40" x2="288" y2="14" stroke="#686868" stroke-width="1.6" stroke-linecap="round"/>
+          <line x1="298" y1="40" x2="304" y2="16" stroke="#686868" stroke-width="1.6" stroke-linecap="round"/>
+          <line x1="310" y1="40" x2="320" y2="18" stroke="#686868" stroke-width="1.6" stroke-linecap="round"/>
+          <text x="288" y="46" text-anchor="middle" font-size="13"
+                font-weight="bold" fill="white" pointer-events="none">8</text>
+        </g>
+        <!-- clump C -->
+        <g class="pm" data-g="back" data-id="8" onclick="pick('back',8)">
+          <ellipse cx="416" cy="40" rx="50" ry="26" fill="#909090" fill-opacity="0.62"/>
+          <line x1="394" y1="40" x2="384" y2="18" stroke="#686868" stroke-width="1.6" stroke-linecap="round"/>
+          <line x1="408" y1="40" x2="401" y2="16" stroke="#686868" stroke-width="1.6" stroke-linecap="round"/>
+          <line x1="416" y1="40" x2="416" y2="14" stroke="#686868" stroke-width="1.6" stroke-linecap="round"/>
+          <line x1="426" y1="40" x2="432" y2="16" stroke="#686868" stroke-width="1.6" stroke-linecap="round"/>
+          <line x1="438" y1="40" x2="448" y2="18" stroke="#686868" stroke-width="1.6" stroke-linecap="round"/>
+          <text x="416" y="46" text-anchor="middle" font-size="13"
+                font-weight="bold" fill="white" pointer-events="none">8</text>
+        </g>
+
+        <!-- ── INTERIOR · scattered plant 4 dots ── -->
+        <g class="pm" data-g="back" data-id="4" onclick="pick('back',4)">
+          <circle cx="128" cy="195" r="19" fill="#8e8e8e" fill-opacity="0.55"/>
+          <circle cx="136" cy="325" r="19" fill="#8e8e8e" fill-opacity="0.55"/>
+          <circle cx="122" cy="455" r="19" fill="#8e8e8e" fill-opacity="0.55"/>
+        </g>
+
+        <!-- ── 7 · Redcurrant Bush ── -->
+        <g class="pm" data-g="back" data-id="7" onclick="pick('back',7)">
+          <rect x="178" y="155" width="115" height="88" rx="6"
+                fill="#b51f1f" fill-opacity="0.75"/>
+          <text x="235" y="203" text-anchor="middle" font-size="16"
+                font-weight="bold" fill="white" pointer-events="none">7</text>
+        </g>
+
+        <!-- ── 6 · Black Elder ── -->
+        <g class="pm" data-g="back" data-id="6" onclick="pick('back',6)">
+          <circle cx="388" cy="200" r="58" fill="#3d1a5c" fill-opacity="0.75"/>
+          <text x="388" y="205" text-anchor="middle" font-size="16"
+                font-weight="bold" fill="white" pointer-events="none">6</text>
+        </g>
+
+        <!-- ── 2 · Schersmin / Mock Orange ── -->
+        <g class="pm" data-g="back" data-id="2" onclick="pick('back',2)">
+          <circle cx="375" cy="395" r="64" fill="#d4cba8" fill-opacity="0.88"
+                  stroke="#b8ad8a" stroke-width="1.5"/>
+          <text x="375" y="400" text-anchor="middle" font-size="16"
+                font-weight="bold" fill="#4a4030" pointer-events="none">2</text>
+        </g>
+
+        <!-- Terrace / path strip -->
+        <rect x="62" y="574" width="406" height="50" rx="3"
+              fill="#ccc1a6" fill-opacity="0.88"/>
+        <text x="265" y="603" text-anchor="middle" font-size="10"
+              fill="#9a9080" font-style="italic">terrace / path</text>
+
+        <!-- 4 · plant 4 bottom-left individual -->
+        <g class="pm" data-g="back" data-id="4" onclick="pick('back',4)">
+          <circle cx="90" cy="638" r="27" fill="#8e8e8e" fill-opacity="0.72"/>
+          <text x="90" y="643" text-anchor="middle" font-size="13"
+                font-weight="bold" fill="white" pointer-events="none">4</text>
+        </g>
+
+        <!-- 3 · Boxwood hedge -->
+        <g class="pm" data-g="back" data-id="3" onclick="pick('back',3)">
+          <rect x="124" y="618" width="130" height="52" rx="4"
+                fill="#4e7a3a" fill-opacity="0.82"/>
+          <text x="189" y="648" text-anchor="middle" font-size="16"
+                font-weight="bold" fill="white" pointer-events="none">3</text>
+        </g>
+
+        <!-- 1 · English Ivy bottom-right -->
+        <g class="pm" data-g="back" data-id="1" onclick="pick('back',1)">
+          <rect x="364" y="618" width="104" height="52" rx="4"
+                fill="#3a6b30" fill-opacity="0.82"/>
+          <text x="416" y="648" text-anchor="middle" font-size="16"
+                font-weight="bold" fill="white" pointer-events="none">1</text>
+        </g>
+
+        <!-- House label -->
+        <text x="265" y="680" text-anchor="middle" font-size="10"
+              fill="#909080" font-style="italic">← house →</text>
+      </svg>
+    </div>
+    <p class="map-hint">Click on a plant to see its details</p>
+  </div>
+
+  <!-- ══ SIDEBAR ════════════════════════════════════════════════════ -->
+  <div class="sidebar">
+    <div class="info-card" id="info-card">
+      <div class="info-empty">Click on a plant<br>to see its details</div>
+    </div>
+    <div class="legend" id="legend"></div>
+  </div>
+
+</div><!-- /layout -->
+
+<script>
+  const DATA = {
+    front: {
+      1: {
+        name: "English Ivy",
+        pl:   "Bluszcz pospolity",
+        se:   "Murgröna",
+        type: "Ground cover / Climber",
+        desc: "Evergreen climbing plant that spreads along the front border. Hardy and shade-tolerant.",
+        color: "#3a6b30"
+      },
+      2: {
+        name: "Hydrangea",
+        pl:   "Hortensja",
+        se:   "Hortensia",
+        type: "Shrub",
+        desc: "Large flowering shrub with clusters of blue, pink or white blooms throughout summer.",
+        color: "#6b5f9a"
+      },
+      3: {
+        name: "Saucer Magnolia",
+        pl:   "Magnolia pośrednia",
+        se:   "Praktmagnolia",
+        type: "Tree / Large shrub",
+        desc: "Ornamental tree with spectacular cup-shaped pink-white flowers appearing in early spring before the leaves.",
+        color: "#c785a8"
+      },
+      4: {
+        name: "Rhododendron",
+        pl:   "Rododendron",
+        se:   "Rododendron",
+        type: "Evergreen shrub",
+        desc: "Evergreen shrub with large flower clusters in spring. Prefers acidic, well-drained soil.",
+        color: "#a83228"
+      }
+    },
+    back: {
+      1: {
+        name: "English Ivy",
+        pl:   "Bluszcz pospolity",
+        se:   "Murgröna",
+        type: "Ground cover / Climber",
+        desc: "Evergreen climbing plant growing along the bottom edge of the back garden.",
+        color: "#3a6b30"
+      },
+      2: {
+        name: "Schersmin",
+        pl:   "Jaśminowiec wonny",
+        se:   "Schersmin",
+        type: "Deciduous shrub",
+        desc: "Mock Orange (Philadelphus coronarius). Highly fragrant white flowers in late spring. Known for its intense jasmine-like scent.",
+        color: "#b8ad8a"
+      },
+      3: {
+        name: "Boxwood",
+        pl:   "Bukszpan",
+        se:   "Buxbom",
+        type: "Evergreen shrub",
+        desc: "Dense evergreen shrub traditionally used for low hedging. Slow-growing and easy to shape.",
+        color: "#4e7a3a"
+      },
+      4: {
+        name: "Unknown plant",
+        pl:   null,
+        se:   null,
+        type: "Unknown",
+        desc: "Not yet identified. Appears as a border plant along the left fence and scattered in the interior of the garden.",
+        color: "#8e8e8e",
+        unknown: true
+      },
+      5: {
+        name: "Unknown plant",
+        pl:   null,
+        se:   null,
+        type: "Unknown",
+        desc: "Not yet identified. Appears as a climbing plant along the right fence and also in the lower-left area.",
+        color: "#7a7a8a",
+        unknown: true
+      },
+      6: {
+        name: "Black Elder",
+        pl:   "Bez czarny",
+        se:   "Fläder",
+        type: "Tree / Large shrub",
+        desc: "Sambucus nigra. Fast-growing shrub with creamy-white flower clusters and dark elderberries used for syrups, cordials and jams.",
+        color: "#3d1a5c"
+      },
+      7: {
+        name: "Redcurrant Bush",
+        pl:   "Porzeczka czerwona",
+        se:   "Röda vinbär",
+        type: "Fruit shrub",
+        desc: "Ribes rubrum. Produces clusters of bright red berries in mid-summer, excellent for jams, juices and desserts.",
+        color: "#b51f1f"
+      },
+      8: {
+        name: "Unknown plant",
+        pl:   null,
+        se:   null,
+        type: "Unknown",
+        desc: "Not yet identified. Three clumps at the top of the garden drawn as grass-like tufts — possibly ornamental grass.",
+        color: "#909090",
+        unknown: true
+      }
+    }
+  };
+
+  let curGarden = 'front';
+
+  function switchTab(garden, btn) {
+    curGarden = garden;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.garden-view').forEach(v => v.classList.remove('active'));
+    document.getElementById('view-' + garden).classList.add('active');
+    clearInfo();
+    buildLegend(garden);
+  }
+
+  function pick(garden, id) {
+    document.querySelectorAll('.pm').forEach(el => el.classList.remove('lit'));
+    document.querySelectorAll(`.pm[data-g="${garden}"][data-id="${id}"]`)
+            .forEach(el => el.classList.add('lit'));
+    renderCard(garden, id);
+  }
+
+  function renderCard(garden, id) {
+    const p = DATA[garden][id];
+    const plStr = p.pl ? `<span class="name-it">${p.pl}</span>`
+                       : `<span class="name-none">not identified yet</span>`;
+    const seStr = p.se ? `<span class="name-it">${p.se}</span>`
+                       : `<span class="name-none">not identified yet</span>`;
+    const enStr = p.unknown ? `<span class="name-none">—</span>` : p.name;
+
+    const unknownBlock = p.unknown
+      ? `<div class="unknown-note">This plant has not been identified yet.<br>Its name will be updated once known.</div>`
+      : '';
+
+    document.getElementById('info-card').innerHTML = `
+      <div class="plant-header">
+        <div class="badge" style="background:${p.unknown ? '#8e8e8e' : p.color}">${id}</div>
+        <div class="plant-name${p.unknown ? ' is-unknown' : ''}">${p.name}</div>
+      </div>
+      <div class="names-block">
+        <div class="name-row"><span class="lang">EN</span>${enStr}</div>
+        <div class="name-row"><span class="lang">PL</span>${plStr}</div>
+        <div class="name-row"><span class="lang">SE</span>${seStr}</div>
+      </div>
+      <div class="meta-label">Type</div>
+      <div class="meta-val">${p.type}</div>
+      <div class="meta-label">Notes</div>
+      <div class="meta-val">${p.desc}</div>
+      ${unknownBlock}
+    `;
+  }
+
+  function clearInfo() {
+    document.querySelectorAll('.pm').forEach(el => el.classList.remove('lit'));
+    document.getElementById('info-card').innerHTML =
+      `<div class="info-empty">Click on a plant<br>to see its details</div>`;
+  }
+
+  function buildLegend(garden) {
+    const seen = new Set();
+    let html = `<div class="legend-title">Legend</div>`;
+    for (const [id, p] of Object.entries(DATA[garden])) {
+      const key = id + p.name;          // each numbered entry appears once
+      if (!seen.has(key)) {
+        seen.add(key);
+        html += `
+          <div class="legend-item" onclick="pick('${garden}',${id})">
+            <div class="legend-dot"
+                 style="background:${p.color};opacity:${p.unknown?0.65:1}"></div>
+            <span>${id}. ${p.name}</span>
+          </div>`;
+      }
+    }
+    document.getElementById('legend').innerHTML = html;
+  }
+
+  // Boot
+  buildLegend('front');
+</script>
+
+</body>
+</html>
