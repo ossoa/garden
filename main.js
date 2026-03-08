@@ -328,7 +328,7 @@ function getPlantIcon(shape, foliage, accent, isUnknown) {
 
 function buildLegend(garden) {
   const seen = new Set();
-  let html = `<div class="legend-title">Legend</div>`;
+  let html = '';
   for (const [id, p] of Object.entries(DATA[garden])) {
     const key = id + p.name;
     if (!seen.has(key)) {
@@ -341,7 +341,7 @@ function buildLegend(garden) {
         </div>`;
     }
   }
-  document.getElementById('legend').innerHTML = html;
+  document.getElementById('legend-' + garden).innerHTML = html;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
