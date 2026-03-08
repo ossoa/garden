@@ -15,6 +15,8 @@
   <div class="tabs">
     <button class="tab-btn active" onclick="switchTab('front',this)">Front Garden</button>
     <button class="tab-btn"        onclick="switchTab('back',this)">Back Garden</button>
+    <span class="tab-divider"></span>
+    <button class="tab-btn tab-btn-tasks" onclick="switchTab('tasks',this)">Tasks</button>
   </div>
 </header>
 
@@ -466,6 +468,138 @@
       </svg>
     </div>
     <p class="map-hint">Click on a plant to see its details</p>
+  </div>
+
+  <!-- ══ TASKS VIEW ════════════════════════════════════════════════ -->
+  <div class="garden-view tasks-view" id="view-tasks">
+    <div class="season-tabs">
+      <button class="season-tab" data-season="spring-prep" onclick="showSeason('spring-prep')">Before Spring</button>
+      <button class="season-tab" data-season="spring" onclick="showSeason('spring')">Spring</button>
+      <button class="season-tab" data-season="summer" onclick="showSeason('summer')">Summer</button>
+      <button class="season-tab" data-season="winter-prep" onclick="showSeason('winter-prep')">Before Winter</button>
+    </div>
+
+    <section class="season-section" id="spring-prep">
+      <h2>Before Spring <span class="season-months">(February - March)</span></h2>
+      <div class="task-group">
+        <h3>Pruning Window</h3>
+        <label class="task-item"><input type="checkbox" data-task="elder-prune"> <strong>Black Elder</strong> — Remove 1/3 oldest stems at ground level</label>
+        <label class="task-item"><input type="checkbox" data-task="redcurrant-prune"> <strong>Redcurrant</strong> — Remove oldest stems, cut side shoots to 2-3 buds</label>
+        <label class="task-item warning"><input type="checkbox" data-task="schersmin-no-prune" disabled checked> <strong>Schersmin</strong> — Do NOT prune (wait until July)</label>
+      </div>
+      <div class="task-group">
+        <h3>Assessment</h3>
+        <label class="task-item"><input type="checkbox" data-task="check-damage"> Check all plants for winter damage</label>
+        <label class="task-item"><input type="checkbox" data-task="rhodo-check"> Inspect <strong>Rhododendron</strong> for desiccation (brown leaf edges)</label>
+        <label class="task-item"><input type="checkbox" data-task="boxwood-check"> Check <strong>Boxwood</strong> for winter bronzing</label>
+        <label class="task-item"><input type="checkbox" data-task="magnolia-check"> Check <strong>Magnolia</strong> bark for animal damage</label>
+      </div>
+      <div class="task-group">
+        <h3>Supplies to Prepare</h3>
+        <label class="task-item"><input type="checkbox" data-task="supply-fertilizer"> Balanced fertilizer</label>
+        <label class="task-item"><input type="checkbox" data-task="supply-acid-fert"> Acidifying fertilizer (Rhododendron, Hydrangea)</label>
+        <label class="task-item"><input type="checkbox" data-task="supply-fleece"> Frost protection fleece</label>
+        <label class="task-item"><input type="checkbox" data-task="supply-netting"> Bird netting</label>
+        <label class="task-item"><input type="checkbox" data-task="supply-mulch"> Mulch materials</label>
+      </div>
+    </section>
+
+    <section class="season-section" id="spring">
+      <h2>Spring <span class="season-months">(April - May)</span></h2>
+      <div class="task-group">
+        <h3>Fertilizing (April)</h3>
+        <label class="task-item"><input type="checkbox" data-task="fertilize-all"> Apply balanced fertilizer to all plants</label>
+        <label class="task-item"><input type="checkbox" data-task="fertilize-rhodo"> <strong>Rhododendron</strong> — Use acidifying fertilizer</label>
+        <label class="task-item"><input type="checkbox" data-task="fertilize-hydrangea"> <strong>Hydrangea</strong> — Use acid-loving formula</label>
+      </div>
+      <div class="task-group">
+        <h3>Mulching (May)</h3>
+        <label class="task-item"><input type="checkbox" data-task="mulch-all"> Apply 5-10 cm mulch around all plants</label>
+        <label class="task-item"><input type="checkbox" data-task="mulch-rhodo"> <strong>Rhododendron</strong> — Use acidic mulch (pine needles)</label>
+        <label class="task-item"><input type="checkbox" data-task="mulch-away"> Keep mulch away from stems/trunks</label>
+      </div>
+      <div class="task-group">
+        <h3>Pruning (May)</h3>
+        <label class="task-item"><input type="checkbox" data-task="magnolia-prune"> <strong>Magnolia</strong> — Prune after flowering (late May)</label>
+        <label class="task-item"><input type="checkbox" data-task="rhodo-deadhead"> <strong>Rhododendron</strong> — Deadhead spent flowers (critical!)</label>
+        <label class="task-item"><input type="checkbox" data-task="ivy-trim-spring"> <strong>English Ivy</strong> — First trim to control spread</label>
+      </div>
+      <div class="task-group">
+        <h3>Pest Watch</h3>
+        <label class="task-item"><input type="checkbox" data-task="boxwood-moth"> Check <strong>Boxwood</strong> weekly for box tree moth</label>
+        <label class="task-item"><input type="checkbox" data-task="aphid-watch"> Watch for aphids on new growth</label>
+        <label class="task-item"><input type="checkbox" data-task="sawfly-watch"> Inspect <strong>Redcurrant</strong> for sawfly larvae</label>
+      </div>
+      <div class="task-group">
+        <h3>Other Tasks</h3>
+        <label class="task-item"><input type="checkbox" data-task="spring-water"> Water if spring is dry</label>
+        <label class="task-item"><input type="checkbox" data-task="remove-suckers-spring"> Remove suckers from Elder and Magnolia</label>
+        <label class="task-item"><input type="checkbox" data-task="magnolia-frost"> Protect Magnolia blooms from late frost</label>
+      </div>
+    </section>
+
+    <section class="season-section" id="summer">
+      <h2>Summer <span class="season-months">(June - August)</span></h2>
+      <div class="task-group">
+        <h3>June — Flowering & First Harvest</h3>
+        <label class="task-item"><input type="checkbox" data-task="schersmin-enjoy"> Enjoy <strong>Schersmin</strong> fragrance (peak mid-June)</label>
+        <label class="task-item harvest"><input type="checkbox" data-task="elderflower-harvest"> <strong>Harvest elderflowers</strong> for cordial (sunny mornings)</label>
+        <label class="task-item"><input type="checkbox" data-task="redcurrant-net"> Install bird netting on <strong>Redcurrant</strong></label>
+        <label class="task-item"><input type="checkbox" data-task="water-june"> Water deeply during dry spells</label>
+      </div>
+      <div class="task-group">
+        <h3>July — Critical Pruning & Harvest</h3>
+        <label class="task-item urgent"><input type="checkbox" data-task="schersmin-prune"> <strong>Schersmin</strong> — Prune immediately after flowering!</label>
+        <label class="task-item harvest"><input type="checkbox" data-task="redcurrant-harvest"> <strong>Harvest redcurrants</strong> when fully red</label>
+        <label class="task-item"><input type="checkbox" data-task="ivy-trim-july"> Trim <strong>English Ivy</strong> and <strong>Boxwood</strong></label>
+        <label class="task-item warning"><input type="checkbox" data-task="stop-fertilizing"> Stop fertilizing all plants</label>
+      </div>
+      <div class="task-group">
+        <h3>August — Final Tasks</h3>
+        <label class="task-item"><input type="checkbox" data-task="boxwood-final-trim"> <strong>Boxwood</strong> — Final trim before mid-August</label>
+        <label class="task-item harvest"><input type="checkbox" data-task="elderberry-harvest"> <strong>Harvest elderberries</strong> when fully black</label>
+        <label class="task-item warning"><input type="checkbox" data-task="stop-pruning"> Stop all pruning (growth won't harden)</label>
+      </div>
+    </section>
+
+    <section class="season-section" id="winter-prep">
+      <h2>Before Winter <span class="season-months">(October - November)</span></h2>
+      <div class="task-group">
+        <h3>Critical: Water Before Freeze</h3>
+        <label class="task-item urgent"><input type="checkbox" data-task="water-before-freeze"> Deep water ALL plants before ground freezes</label>
+        <label class="task-item"><input type="checkbox" data-task="water-evergreens"> Extra water for Rhododendron, Boxwood, Magnolia</label>
+      </div>
+      <div class="task-group">
+        <h3>Winter Mulching</h3>
+        <label class="task-item"><input type="checkbox" data-task="mulch-winter"> Add 8-10 cm winter mulch around all plants</label>
+        <label class="task-item"><input type="checkbox" data-task="mulch-rhodo-winter"> <strong>Rhododendron</strong> — 10-15 cm acidic mulch</label>
+        <label class="task-item"><input type="checkbox" data-task="mulch-gap"> Keep mulch 10 cm away from trunks</label>
+      </div>
+      <div class="task-group">
+        <h3>Winter Protection</h3>
+        <label class="task-item"><input type="checkbox" data-task="hydrangea-protect"> <strong>Hydrangea macrophylla</strong> — Chicken wire cage + leaves + burlap</label>
+        <label class="task-item"><input type="checkbox" data-task="boxwood-protect"> <strong>Boxwood</strong> — Burlap windbreak on north/east</label>
+        <label class="task-item"><input type="checkbox" data-task="magnolia-protect"> <strong>Magnolia</strong> (young) — Wrap trunk with burlap</label>
+        <label class="task-item"><input type="checkbox" data-task="rhodo-protect"> <strong>Rhododendron</strong> (exposed) — Windbreak screens</label>
+      </div>
+      <div class="task-group">
+        <h3>Cleanup</h3>
+        <label class="task-item"><input type="checkbox" data-task="cleanup-leaves"> Clean up fallen leaves around plants</label>
+        <label class="task-item"><input type="checkbox" data-task="cleanup-berries"> Remove fallen Elder berries</label>
+        <label class="task-item"><input type="checkbox" data-task="check-coral-spot"> Check Redcurrant for coral spot</label>
+      </div>
+      <div class="task-group">
+        <h3>Don't Do</h3>
+        <label class="task-item warning"><input type="checkbox" data-task="no-prune-winter" disabled checked> Don't prune (except Elder in November)</label>
+        <label class="task-item warning"><input type="checkbox" data-task="no-fertilize-winter" disabled checked> Don't fertilize</label>
+        <label class="task-item warning"><input type="checkbox" data-task="no-cut-hydrangea" disabled checked> Don't cut back Hydrangea stems</label>
+      </div>
+    </section>
+
+    <div class="tasks-footer">
+      <button class="reset-btn" onclick="resetTasks()">Reset All Tasks</button>
+      <p class="save-note">Tasks are saved automatically in your browser</p>
+    </div>
   </div>
 
   <!-- ══ SIDEBAR ════════════════════════════════════════════════════ -->

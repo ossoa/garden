@@ -1,5 +1,6 @@
 let curGarden = 'front';
 let guideCache = {};
+const TASK_STORAGE_KEY = 'garden-tasks';
 
 const MONTHS = [
   'January', 'February', 'March', 'April', 'May', 'June',
@@ -12,14 +13,20 @@ function switchTab(garden, btn, updateHash = true) {
   if (btn) {
     btn.classList.add('active');
   } else {
+    const tabNames = { front: 'Front Garden', back: 'Back Garden', tasks: 'Tasks' };
     document.querySelectorAll('.tab-btn').forEach(b => {
-      if (b.textContent.toLowerCase().includes(garden)) b.classList.add('active');
+      if (b.textContent === tabNames[garden]) b.classList.add('active');
     });
   }
   document.querySelectorAll('.garden-view').forEach(v => v.classList.remove('active'));
   document.getElementById('view-' + garden).classList.add('active');
-  clearInfo();
-  buildLegend(garden);
+  
+  if (garden === 'tasks') {
+    initTasks();
+  } else {
+    clearInfo();
+    buildLegend(garden);
+  }
   
   if (updateHash) {
     window.location.hash = garden;
@@ -28,7 +35,84 @@ function switchTab(garden, btn, updateHash = true) {
 
 function getGardenFromHash() {
   const hash = window.location.hash.slice(1);
-  return (hash === 'front' || hash === 'back') ? hash : 'front';
+  return (hash === 'front' || hash === 'back' || hash === 'tasks') ? hash : 'front';
+}
+
+function getCurrentSeason() {
+  const month = new Date().getMonth();
+  if (month >= 1 && month <= 2) return 'spring-prep';
+  if (month >= 3 && month <= 4) return 'spring';
+  if (month >= 5 && month <= 7) return 'summer';
+  if (month >= 9 && month <= 10) return 'winter-prep';
+  return 'spring-prep';
+}
+
+function showSeason(seasonId) {
+  document.querySelectorAll('.season-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.season-tab').forEach(t => t.classList.remove('active'));
+  
+  const section = document.getElementById(seasonId);
+  const tab = document.querySelector(`.season-tab[data-season="${seasonId}"]`);
+  if (section) section.classList.add('active');
+  if (tab) tab.classList.add('active');
+}
+
+function loadTasks() {
+  const saved = localStorage.getItem(TASK_STORAGE_KEY);
+  if (saved) {
+    const tasks = JSON.parse(saved);
+    document.querySelectorAll('.task-item input[type="checkbox"]').forEach(cb => {
+      if (cb.dataset.task && tasks[cb.dataset.task]) {
+        cb.checked = true;
+        cb.closest('.task-item').classList.add('completed');
+      }
+    });
+  }
+}
+
+function saveTasks() {
+  const tasks = {};
+  document.querySelectorAll('.task-item input[type="checkbox"]').forEach(cb => {
+    if (cb.dataset.task && !cb.disabled) {
+      tasks[cb.dataset.task] = cb.checked;
+    }
+  });
+  localStorage.setItem(TASK_STORAGE_KEY, JSON.stringify(tasks));
+}
+
+function resetTasks() {
+  if (confirm('Reset all tasks? This will uncheck everything.')) {
+    localStorage.removeItem(TASK_STORAGE_KEY);
+    document.querySelectorAll('.task-item input[type="checkbox"]').forEach(cb => {
+      if (!cb.disabled) {
+        cb.checked = false;
+        cb.closest('.task-item').classList.remove('completed');
+      }
+    });
+  }
+}
+
+let tasksInitialized = false;
+function initTasks() {
+  if (tasksInitialized) return;
+  tasksInitialized = true;
+  
+  const currentSeason = getCurrentSeason();
+  showSeason(currentSeason);
+  
+  const currentTab = document.querySelector(`.season-tab[data-season="${currentSeason}"]`);
+  if (currentTab) currentTab.classList.add('current');
+  
+  loadTasks();
+  
+  document.querySelectorAll('.task-item input[type="checkbox"]').forEach(cb => {
+    if (!cb.disabled) {
+      cb.addEventListener('change', () => {
+        cb.closest('.task-item').classList.toggle('completed', cb.checked);
+        saveTasks();
+      });
+    }
+  });
 }
 
 function pick(garden, id) {
