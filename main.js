@@ -1,13 +1,28 @@
 let curGarden = 'front';
 
-function switchTab(garden, btn) {
+function switchTab(garden, btn, updateHash = true) {
   curGarden = garden;
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
+  if (btn) {
+    btn.classList.add('active');
+  } else {
+    document.querySelectorAll('.tab-btn').forEach(b => {
+      if (b.textContent.toLowerCase().includes(garden)) b.classList.add('active');
+    });
+  }
   document.querySelectorAll('.garden-view').forEach(v => v.classList.remove('active'));
   document.getElementById('view-' + garden).classList.add('active');
   clearInfo();
   buildLegend(garden);
+  
+  if (updateHash) {
+    window.location.hash = garden;
+  }
+}
+
+function getGardenFromHash() {
+  const hash = window.location.hash.slice(1);
+  return (hash === 'front' || hash === 'back') ? hash : 'front';
 }
 
 function pick(garden, id) {
@@ -72,5 +87,11 @@ function buildLegend(garden) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  buildLegend('front');
+  const initialGarden = getGardenFromHash();
+  switchTab(initialGarden, null, false);
+});
+
+window.addEventListener('hashchange', () => {
+  const garden = getGardenFromHash();
+  switchTab(garden, null, false);
 });
