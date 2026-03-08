@@ -9,13 +9,14 @@
 <body>
 
 <header>
-  <h1>My Garden</h1>
+  <div class="header-left">
+    <h1>My Garden</h1>
+  </div>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('front',this)">Front Garden</button>
+    <button class="tab-btn"        onclick="switchTab('back',this)">Back Garden</button>
+  </div>
 </header>
-
-<div class="tabs">
-  <button class="tab-btn active" onclick="switchTab('front',this)">Front Garden</button>
-  <button class="tab-btn"        onclick="switchTab('back',this)">Back Garden</button>
-</div>
 
 <div class="layout">
 
@@ -95,7 +96,7 @@
           <circle cx="98" cy="195" r="12" fill="#f0c8d8"/>
           <circle cx="75" cy="212" r="10" fill="#e8b8c8"/>
           <text x="80" y="193" text-anchor="middle" font-size="16"
-                font-weight="bold" fill="#4a4040" pointer-events="none">2</text>
+                font-weight="bold" fill="#5a2030" pointer-events="none">2</text>
         </g>
 
         <!-- 2 · Hydrangea (right) with pale pink flowers -->
@@ -113,7 +114,7 @@
           <circle cx="229" cy="195" r="12" fill="#f0c8d8"/>
           <circle cx="206" cy="212" r="10" fill="#e8b8c8"/>
           <text x="211" y="193" text-anchor="middle" font-size="16"
-                font-weight="bold" fill="#4a4040" pointer-events="none">2</text>
+                font-weight="bold" fill="#5a2030" pointer-events="none">2</text>
         </g>
 
         <!-- Right section background -->
@@ -135,7 +136,7 @@
           <circle cx="562" cy="168" r="9" fill="#f8f8f5"/>
           <circle cx="545" cy="178" r="8" fill="#f0f0eb"/>
           <text x="547" y="163" text-anchor="middle" font-size="16"
-                font-weight="bold" fill="white" pointer-events="none">4</text>
+                font-weight="bold" fill="#1a3a18" pointer-events="none">4</text>
         </g>
 
         <!-- 3 · Saucer Magnolia with intense pink flowers -->
@@ -174,7 +175,7 @@
           <circle cx="736" cy="168" r="8" fill="#f8f8f5"/>
           <circle cx="720" cy="176" r="7" fill="#f0f0eb"/>
           <text x="722" y="163" text-anchor="middle" font-size="16"
-                font-weight="bold" fill="white" pointer-events="none">4</text>
+                font-weight="bold" fill="#1a3a18" pointer-events="none">4</text>
         </g>
 
         <!-- Direction label -->
