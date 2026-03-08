@@ -276,3 +276,175 @@ header p {
 .pm.lit {
   filter: drop-shadow(0 0 7px rgba(50,90,40,0.75)) brightness(0.88);
 }
+
+/* ── Guide Loading ───────────────────────────── */
+.guide-loading {
+  text-align: center;
+  color: #9a9080;
+  font-style: italic;
+  padding: 1rem;
+  font-size: 0.85rem;
+}
+
+/* ── Accordions ──────────────────────────────── */
+.guide-accordions {
+  margin-top: 1rem;
+  border-top: 1px solid #eee;
+  padding-top: 1rem;
+}
+
+.accordion {
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+  overflow: hidden;
+}
+
+.accordion-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 0.75rem;
+  background: #f9f7f3;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s;
+}
+
+.accordion-header:hover {
+  background: var(--green-light);
+}
+
+.accordion-icon {
+  font-size: 0.7rem;
+  color: #7a7060;
+  width: 1em;
+}
+
+.accordion-title {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.accordion-content {
+  display: none;
+  padding: 0.75rem;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: #5a5550;
+  background: white;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.accordion.open .accordion-content {
+  display: block;
+}
+
+.accordion.this-month .accordion-header {
+  background: var(--green-light);
+  border-left: 3px solid var(--green);
+}
+
+.accordion.this-month .accordion-title {
+  color: var(--green);
+}
+
+/* ── Month Navigation ────────────────────────── */
+.month-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.month-tab {
+  padding: 0.3rem 0.4rem;
+  font-size: 0.7rem;
+  font-family: Georgia, serif;
+  border: 1px solid var(--border);
+  background: #f9f7f3;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.month-tab:hover {
+  background: var(--green-light);
+}
+
+.month-tab.current-month {
+  background: var(--green);
+  color: white;
+  border-color: var(--green);
+  font-weight: bold;
+}
+
+.month-tab.active {
+  background: var(--green-light);
+  border-color: var(--green);
+}
+
+.month-tab.current-month.active {
+  background: var(--green);
+  color: white;
+}
+
+.month-tab.no-data {
+  opacity: 0.5;
+}
+
+.month-content-wrapper {
+  border-top: 1px solid #eee;
+  padding-top: 0.5rem;
+}
+
+.month-content {
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+/* ── Guide Content Styling ───────────────────── */
+.accordion-content h4,
+.month-content h4 {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--green);
+  margin: 0.75rem 0 0.35rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.accordion-content h4:first-child,
+.month-content h4:first-child {
+  margin-top: 0;
+}
+
+.accordion-content p,
+.month-content p {
+  margin-bottom: 0.5rem;
+}
+
+.accordion-content ul,
+.month-content ul {
+  margin: 0.5rem 0;
+  padding-left: 1.2rem;
+}
+
+.accordion-content li,
+.month-content li {
+  margin-bottom: 0.35rem;
+}
+
+.accordion-content strong,
+.month-content strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* ── Sidebar Scroll ──────────────────────────── */
+.info-card {
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+}

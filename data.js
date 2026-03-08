@@ -8,7 +8,8 @@ const DATA = {
       desc: "Evergreen climbing plant that spreads along the front border. Hardy and shade-tolerant.",
       shape: "climber",
       foliage: "#3d6b32",
-      accent: "#5a8a4a"
+      accent: "#5a8a4a",
+      guide: "plants/english-ivy.md"
     },
     2: {
       name: "Hydrangea",
@@ -18,7 +19,8 @@ const DATA = {
       desc: "Large flowering shrub with clusters of blue, pink or white blooms throughout summer.",
       shape: "shrub",
       foliage: "#4a7a3a",
-      accent: "#f0c8d8"
+      accent: "#f0c8d8",
+      guide: "plants/hydrangea.md"
     },
     3: {
       name: "Saucer Magnolia",
@@ -28,7 +30,8 @@ const DATA = {
       desc: "Ornamental tree with spectacular cup-shaped pink-white flowers appearing in early spring before the leaves.",
       shape: "tree",
       foliage: "#4a7040",
-      accent: "#d45a88"
+      accent: "#d45a88",
+      guide: "plants/saucer-magnolia.md"
     },
     4: {
       name: "Rhododendron",
@@ -38,7 +41,8 @@ const DATA = {
       desc: "Evergreen shrub with large flower clusters in spring. Prefers acidic, well-drained soil.",
       shape: "shrub",
       foliage: "#3d6832",
-      accent: "#f8f8f5"
+      accent: "#f8f8f5",
+      guide: "plants/rhododendron.md"
     }
   },
   back: {
@@ -50,7 +54,8 @@ const DATA = {
       desc: "Evergreen climbing plant growing in a pot on the terrace.",
       shape: "potted",
       foliage: "#3a6b30",
-      accent: "#5a8a4a"
+      accent: "#5a8a4a",
+      guide: "plants/english-ivy.md"
     },
     2: {
       name: "Schersmin",
@@ -60,7 +65,8 @@ const DATA = {
       desc: "Mock Orange (Philadelphus coronarius). Highly fragrant white flowers in late spring. Known for its intense jasmine-like scent.",
       shape: "shrub",
       foliage: "#7a9a5a",
-      accent: "#ffffff"
+      accent: "#ffffff",
+      guide: "plants/schersmin.md"
     },
     3: {
       name: "Boxwood",
@@ -70,7 +76,8 @@ const DATA = {
       desc: "Dense evergreen shrub in a pot on the terrace. Slow-growing and easy to shape.",
       shape: "potted",
       foliage: "#3d6b32",
-      accent: "#4a7a3a"
+      accent: "#4a7a3a",
+      guide: "plants/boxwood.md"
     },
     4: {
       name: "Unknown plant",
@@ -102,7 +109,8 @@ const DATA = {
       desc: "Sambucus nigra. Fast-growing shrub with creamy-white flower clusters and dark elderberries used for syrups, cordials and jams.",
       shape: "shrub",
       foliage: "#4a7040",
-      accent: "#f5f5f0"
+      accent: "#f5f5f0",
+      guide: "plants/black-elder.md"
     },
     7: {
       name: "Redcurrant Bush",
@@ -112,7 +120,8 @@ const DATA = {
       desc: "Ribes rubrum. Produces clusters of bright red berries in mid-summer, excellent for jams, juices and desserts.",
       shape: "shrub",
       foliage: "#5a8a4a",
-      accent: "#c41818"
+      accent: "#c41818",
+      guide: "plants/redcurrant.md"
     },
     8: {
       name: "Unknown plant",

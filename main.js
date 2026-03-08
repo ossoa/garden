@@ -1,4 +1,10 @@
 let curGarden = 'front';
+let guideCache = {};
+
+const MONTHS = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December'
+];
 
 function switchTab(garden, btn, updateHash = true) {
   curGarden = garden;
@@ -32,7 +38,133 @@ function pick(garden, id) {
   renderCard(garden, id);
 }
 
-function renderCard(garden, id) {
+async function fetchGuide(path) {
+  if (guideCache[path]) return guideCache[path];
+  try {
+    const res = await fetch(path);
+    if (!res.ok) return null;
+    const text = await res.text();
+    guideCache[path] = text;
+    return text;
+  } catch (e) {
+    console.error('Failed to fetch guide:', e);
+    return null;
+  }
+}
+
+function parseGuideSections(markdown) {
+  const sections = {
+    monthlyCalendar: {},
+    pruning: '',
+    seasonal: '',
+    problems: '',
+    tips: ''
+  };
+  
+  const lines = markdown.split('\n');
+  let currentH2 = '';
+  let currentH3 = '';
+  let buffer = [];
+  
+  function flushBuffer() {
+    const content = buffer.join('\n').trim();
+    buffer = [];
+    
+    if (currentH2.includes('Monthly Care Calendar')) {
+      if (currentH3) {
+        sections.monthlyCalendar[currentH3] = content;
+      }
+    } else if (currentH2.includes('Pruning')) {
+      sections.pruning += content + '\n\n';
+    } else if (currentH2.includes('Seasonal')) {
+      sections.seasonal += content + '\n\n';
+    } else if (currentH2.includes('Common Problems')) {
+      sections.problems += content + '\n\n';
+    } else if (currentH2.includes('Tips')) {
+      sections.tips += content + '\n\n';
+    }
+  }
+  
+  for (const line of lines) {
+    if (line.startsWith('## ')) {
+      flushBuffer();
+      currentH2 = line.slice(3).trim();
+      currentH3 = '';
+    } else if (line.startsWith('### ')) {
+      flushBuffer();
+      currentH3 = line.slice(4).trim();
+    } else {
+      buffer.push(line);
+    }
+  }
+  flushBuffer();
+  
+  return sections;
+}
+
+function getCurrentMonth() {
+  return MONTHS[new Date().getMonth()];
+}
+
+function renderAccordion(title, content, isOpen = false, extraClass = '') {
+  const openClass = isOpen ? 'open' : '';
+  const icon = isOpen ? '▼' : '▶';
+  return `
+    <div class="accordion ${extraClass} ${openClass}">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <span class="accordion-icon">${icon}</span>
+        <span class="accordion-title">${title}</span>
+      </div>
+      <div class="accordion-content">
+        ${content}
+      </div>
+    </div>
+  `;
+}
+
+function toggleAccordion(header) {
+  const accordion = header.parentElement;
+  const icon = header.querySelector('.accordion-icon');
+  const isOpen = accordion.classList.toggle('open');
+  icon.textContent = isOpen ? '▼' : '▶';
+}
+
+function renderMonthlyCalendar(monthlyData, currentMonth) {
+  let html = '<div class="month-nav">';
+  
+  MONTHS.forEach((month, idx) => {
+    const isCurrent = month === currentMonth;
+    const hasData = monthlyData[month];
+    const classes = ['month-tab'];
+    if (isCurrent) classes.push('current-month');
+    if (!hasData) classes.push('no-data');
+    
+    html += `<button class="${classes.join(' ')}" onclick="showMonth('${month}')" data-month="${month}">${month.slice(0,3)}</button>`;
+  });
+  
+  html += '</div><div class="month-content-wrapper">';
+  
+  MONTHS.forEach(month => {
+    const isCurrent = month === currentMonth;
+    const content = monthlyData[month] || 'No specific tasks for this month.';
+    const display = isCurrent ? 'block' : 'none';
+    html += `<div class="month-content" data-month="${month}" style="display:${display}">${marked.parse(content)}</div>`;
+  });
+  
+  html += '</div>';
+  return html;
+}
+
+function showMonth(month) {
+  document.querySelectorAll('.month-tab').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.month === month);
+  });
+  document.querySelectorAll('.month-content').forEach(div => {
+    div.style.display = div.dataset.month === month ? 'block' : 'none';
+  });
+}
+
+async function renderCard(garden, id) {
   const p = DATA[garden][id];
   const plStr = p.pl ? `<span class="name-it">${p.pl}</span>`
                      : `<span class="name-none">not identified yet</span>`;
@@ -44,9 +176,9 @@ function renderCard(garden, id) {
     ? `<div class="unknown-note">This plant has not been identified yet.<br>Its name will be updated once known.</div>`
     : '';
 
-  document.getElementById('info-card').innerHTML = `
+  let baseCard = `
     <div class="plant-header">
-      <div class="badge" style="background:${p.unknown ? '#8e8e8e' : p.color}">${id}</div>
+      <div class="badge" style="background:${p.unknown ? '#8e8e8e' : p.foliage}">${id}</div>
       <div class="plant-name${p.unknown ? ' is-unknown' : ''}">${p.name}</div>
     </div>
     <div class="names-block">
@@ -60,6 +192,61 @@ function renderCard(garden, id) {
     <div class="meta-val">${p.desc}</div>
     ${unknownBlock}
   `;
+
+  const infoCard = document.getElementById('info-card');
+  
+  if (p.guide && !p.unknown) {
+    infoCard.innerHTML = baseCard + '<div class="guide-loading">Loading care guide...</div>';
+    
+    const markdown = await fetchGuide(p.guide);
+    
+    if (markdown) {
+      const sections = parseGuideSections(markdown);
+      const currentMonth = getCurrentMonth();
+      
+      let accordions = '';
+      
+      const currentMonthData = sections.monthlyCalendar[currentMonth];
+      if (currentMonthData) {
+        accordions += renderAccordion(
+          `This Month (${currentMonth})`,
+          marked.parse(currentMonthData),
+          true,
+          'this-month'
+        );
+      }
+      
+      if (Object.keys(sections.monthlyCalendar).length > 0) {
+        accordions += renderAccordion(
+          'Monthly Calendar',
+          renderMonthlyCalendar(sections.monthlyCalendar, currentMonth),
+          false
+        );
+      }
+      
+      if (sections.pruning.trim()) {
+        accordions += renderAccordion('Pruning Guide', marked.parse(sections.pruning), false);
+      }
+      
+      if (sections.seasonal.trim()) {
+        accordions += renderAccordion('Seasonal Care', marked.parse(sections.seasonal), false);
+      }
+      
+      if (sections.problems.trim()) {
+        accordions += renderAccordion('Common Problems', marked.parse(sections.problems), false);
+      }
+      
+      if (sections.tips.trim()) {
+        accordions += renderAccordion('Local Tips', marked.parse(sections.tips), false);
+      }
+      
+      infoCard.innerHTML = baseCard + `<div class="guide-accordions">${accordions}</div>`;
+    } else {
+      infoCard.innerHTML = baseCard;
+    }
+  } else {
+    infoCard.innerHTML = baseCard;
+  }
 }
 
 function clearInfo() {
