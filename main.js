@@ -68,6 +68,77 @@ function clearInfo() {
     `<div class="info-empty">Click on a plant<br>to see its details</div>`;
 }
 
+function getPlantIcon(shape, foliage, accent, isUnknown) {
+  const opacity = isUnknown ? 0.7 : 1;
+  const w = 24, h = 20;
+  
+  const shapes = {
+    shrub: `
+      <svg width="${w}" height="${h}" viewBox="0 0 24 20">
+        <ellipse cx="12" cy="12" rx="10" ry="7" fill="${foliage}" opacity="${opacity}"/>
+        <ellipse cx="8" cy="10" rx="5" ry="4" fill="${foliage}" opacity="${opacity}"/>
+        <ellipse cx="16" cy="10" rx="5" ry="4" fill="${foliage}" opacity="${opacity}"/>
+        <circle cx="8" cy="9" r="2.5" fill="${accent}" opacity="${opacity}"/>
+        <circle cx="14" cy="8" r="2" fill="${accent}" opacity="${opacity}"/>
+        <circle cx="11" cy="12" r="2" fill="${accent}" opacity="${opacity}"/>
+      </svg>`,
+    
+    tree: `
+      <svg width="${w}" height="${h}" viewBox="0 0 24 20">
+        <rect x="10" y="14" width="4" height="6" fill="#8b5a2b" opacity="${opacity}"/>
+        <ellipse cx="12" cy="9" rx="9" ry="8" fill="${foliage}" opacity="${opacity}"/>
+        <ellipse cx="8" cy="7" rx="4" ry="3.5" fill="${accent}" opacity="${opacity * 0.9}"/>
+        <ellipse cx="14" cy="6" rx="3.5" ry="3" fill="${accent}" opacity="${opacity * 0.9}"/>
+        <ellipse cx="11" cy="10" rx="3" ry="2.5" fill="${accent}" opacity="${opacity * 0.9}"/>
+      </svg>`,
+    
+    climber: `
+      <svg width="${w}" height="${h}" viewBox="0 0 24 20">
+        <path d="M12 2 Q8 5, 12 8 Q16 11, 12 14 Q8 17, 12 20" 
+              stroke="${foliage}" stroke-width="3" fill="none" opacity="${opacity}"/>
+        <path d="M9 4 l-2 -2 l1.5 0.5 l0.5 -1.5 l0.5 1.5 l1.5 -0.5 z" fill="${foliage}" opacity="${opacity}"/>
+        <path d="M15 10 l-2 -2 l1.5 0.5 l0.5 -1.5 l0.5 1.5 l1.5 -0.5 z" fill="${foliage}" opacity="${opacity}"/>
+        <path d="M9 16 l-2 -2 l1.5 0.5 l0.5 -1.5 l0.5 1.5 l1.5 -0.5 z" fill="${foliage}" opacity="${opacity}"/>
+        <circle cx="14" cy="5" r="2" fill="${accent}" opacity="${opacity}"/>
+        <circle cx="10" cy="12" r="2" fill="${accent}" opacity="${opacity}"/>
+        <circle cx="14" cy="17" r="2" fill="${accent}" opacity="${opacity}"/>
+      </svg>`,
+    
+    hedge: `
+      <svg width="${w}" height="${h}" viewBox="0 0 24 20">
+        <rect x="4" y="3" width="16" height="17" rx="3" ry="3" fill="${foliage}" opacity="${opacity}"/>
+        <ellipse cx="8" cy="6" rx="3" ry="2.5" fill="${accent}" opacity="${opacity * 0.8}"/>
+        <ellipse cx="16" cy="6" rx="3" ry="2.5" fill="${accent}" opacity="${opacity * 0.8}"/>
+        <ellipse cx="12" cy="10" rx="3" ry="2.5" fill="${accent}" opacity="${opacity * 0.8}"/>
+        <ellipse cx="8" cy="14" rx="3" ry="2.5" fill="${accent}" opacity="${opacity * 0.8}"/>
+        <ellipse cx="16" cy="14" rx="3" ry="2.5" fill="${accent}" opacity="${opacity * 0.8}"/>
+      </svg>`,
+    
+    potted: `
+      <svg width="${w}" height="${h}" viewBox="0 0 24 20">
+        <rect x="6" y="13" width="12" height="7" rx="1" fill="#8b5a2b" stroke="#6b4423" stroke-width="0.5"/>
+        <rect x="7" y="14" width="10" height="2" fill="#5a4030"/>
+        <circle cx="12" cy="8" r="6" fill="${foliage}" opacity="${opacity}"/>
+        <circle cx="9" cy="6" rx="3" ry="2.5" fill="${accent}" opacity="${opacity * 0.9}"/>
+        <circle cx="15" cy="7" rx="2.5" ry="2" fill="${accent}" opacity="${opacity * 0.9}"/>
+        <circle cx="12" cy="10" rx="2" ry="1.5" fill="${accent}" opacity="${opacity * 0.9}"/>
+      </svg>`,
+    
+    grass: `
+      <svg width="${w}" height="${h}" viewBox="0 0 24 20">
+        <path d="M6 20 Q5 12, 4 6" stroke="${foliage}" stroke-width="2" fill="none" opacity="${opacity}"/>
+        <path d="M10 20 Q9 10, 8 3" stroke="${foliage}" stroke-width="2" fill="none" opacity="${opacity}"/>
+        <path d="M14 20 Q14 10, 15 2" stroke="${foliage}" stroke-width="2" fill="none" opacity="${opacity}"/>
+        <path d="M18 20 Q18 12, 20 5" stroke="${foliage}" stroke-width="2" fill="none" opacity="${opacity}"/>
+        <circle cx="5" cy="5" r="2" fill="${accent}" opacity="${opacity}"/>
+        <circle cx="14" cy="3" r="2" fill="${accent}" opacity="${opacity}"/>
+        <circle cx="19" cy="6" r="2" fill="${accent}" opacity="${opacity}"/>
+      </svg>`
+  };
+  
+  return shapes[shape] || shapes.shrub;
+}
+
 function buildLegend(garden) {
   const seen = new Set();
   let html = `<div class="legend-title">Legend</div>`;
@@ -75,10 +146,10 @@ function buildLegend(garden) {
     const key = id + p.name;
     if (!seen.has(key)) {
       seen.add(key);
+      const icon = getPlantIcon(p.shape, p.foliage, p.accent, p.unknown);
       html += `
         <div class="legend-item" onclick="pick('${garden}',${id})">
-          <div class="legend-dot"
-               style="background:${p.color};opacity:${p.unknown?0.65:1}"></div>
+          <div class="legend-icon">${icon}</div>
           <span>${id}. ${p.name}</span>
         </div>`;
     }
