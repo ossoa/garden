@@ -124,15 +124,15 @@ const DATA = {
       guide: "plants/redcurrant.md"
     },
     8: {
-      name: "Unknown plant",
-      pl:   null,
-      se:   null,
-      type: "Unknown",
-      desc: "Not yet identified. Three clumps at the top of the garden — possibly ornamental grass with yellow flowers.",
-      shape: "grass",
+      name: "Forsythia",
+      pl:   "Forsycja",
+      se:   "Forsythia",
+      type: "Deciduous shrub",
+      desc: "Forsythia × intermedia. Three clumps at the top of the garden producing a vivid display of bright yellow flowers in early spring, before the leaves emerge.",
+      shape: "shrub",
       foliage: "#5a8a4a",
-      accent: "#f0d020",
-      unknown: true
+      accent: "#e8c800",
+      guide: "plants/forsythia.md"
     }
   }
 };
