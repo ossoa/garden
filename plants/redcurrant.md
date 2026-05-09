@@ -226,7 +226,7 @@ Redcurrants are ideally suited to the Stockholm area climate:
 ## Common Problems in Swedish Climate
 
 ### Pests
-- **Aphids (Currant blister aphid):** Red blisters on leaves; usually cosmetic, spray with soap solution if severe
+- **Aphids (Currant blister aphid):** Red blisters on leaves; usually cosmetic, spray with soap solution if severe. **Ants on the plant are a sign of aphids** — ants farm aphids for honeydew and protect them from predators. To break the cycle: wrap a sticky ant barrier band around the main stem (SE: *myrbandage* or *limmband mot myror*, available at Bauhaus/Hornbach) so ants can't reach the aphids; natural predators like ladybirds will then take over. Treat aphids directly with a soap-water spray or a strong jet of water.
 - **Currant sawfly:** Green caterpillars defoliate plants rapidly; inspect undersides of leaves, pick off or spray with Bt
 - **Big bud mite:** Swollen, rounded buds; remove and destroy affected buds in winter
 - **Birds:** Will strip fruit; netting is essential
@@ -269,7 +269,7 @@ Redcurrants are ideally suited to the Stockholm area climate:
 
 2. **Water for quality:** Consistent moisture = larger, juicier berries
 
-3. **Mulch generously:** Shallow roots benefit from organic mulch; also suppresses weeds
+3. **Mulch generously:** Shallow roots benefit from organic mulch (use barkmull); also suppresses weeds. Clear grass from a 50 cm radius around the base before mulching — grass competes directly for moisture and nutrients. For persistent grass, lay wet newspaper or cardboard under the mulch layer to block regrowth (it biodegrades harmlessly). Wild strawberries (smultron) around the base are fine to leave.
 
 4. **Prune religiously:** Annual pruning is the key to sustained production
 

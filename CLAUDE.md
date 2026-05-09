@@ -55,6 +55,27 @@ Back plants 4 and 5 are still unidentified.
 - Location Notes should be specific to Stockholm / the garden
 - All advice should be appropriate for Swedish hardiness zones
 
+## Mulching guide
+
+Two products in use: **barkmull** (fine composted bark, nutritive) and **täckbark brun** (coarse pine bark, decorative/weed suppression, acidic).
+
+| Plant | Product | Notes |
+|---|---|---|
+| Rhododendron | Täckbark Brun | Pine bark is naturally acidic — ideal |
+| Saucer Magnolia | Täckbark Brun | Keep 10 cm gap from trunk |
+| Forsythia | Täckbark Brun | Large established shrub |
+| Schersmin | Täckbark Brun | Large established shrub |
+| Unknown climbing (back 4) | Täckbark Brun | Low-maintenance coverage |
+| Unknown hedge (back 5) | Täckbark Brun | Border coverage |
+| Hydrangea | Barkmull | Needs moisture retention and nutrients |
+| Redcurrant | Barkmull | Shallow roots; clear grass first (50 cm radius) |
+| Black Elder | Barkmull | Benefits from organic breakdown |
+| English Ivy (ground) | Barkmull | Finer mulch suits ground cover |
+| English Ivy (pot) | Barkmull | Pots need finer mulch |
+| Boxwood (pot) | Barkmull | Coarse chunks don't suit containers |
+
+**Grass around back garden plants:** Grass grows around Redcurrant, Black Elder, and Forsythia. Clear grass before mulching Redcurrant (most important). Cardboard/newspaper trick: lay under mulch to suppress regrowth. Smultron (wild strawberries) around base are fine to leave.
+
 ## Git & deployment
 
 - `plants.md` and `seasonal-checklist.md` are in `.gitignore` — edits to them are fine but they will never be committed
