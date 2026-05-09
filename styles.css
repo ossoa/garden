@@ -6,7 +6,7 @@
   --green-hover: #698060;
   --green-light: #EEF3EB;
   --border:      #E4DDD3;
-  --ground:      #dde8cc;
+  --ground:      #e2ebd6;
   --path-col:    #ccc1a6;
   --panel:       #FFFFFF;
   --unknown:     #9A9590;
@@ -181,6 +181,7 @@ header p {
   display: block;
   width: 100%;
   height: auto;
+  filter: saturate(0.68) brightness(1.05);
 }
 
 .map-hint {
