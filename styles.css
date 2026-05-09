@@ -662,3 +662,89 @@ header p {
   font-size: 0.75rem;
   font-style: italic;
 }
+
+/* ══════════════════════════════════════════════════
+   RESPONSIVE — mobile (≤ 768px)
+   ══════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+
+  /* ── Header ─────────────────────────────────── */
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.9rem 1rem;
+  }
+
+  .tabs {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 2px; /* prevent clipping scrollbar */
+  }
+
+  .tab-btn {
+    padding: 0.45rem 1rem;
+    font-size: 0.88rem;
+    white-space: nowrap;
+  }
+
+  .tab-btn-tasks {
+    padding: 0.4rem 0.85rem;
+  }
+
+  /* ── Layout ──────────────────────────────────── */
+  .layout {
+    flex-direction: column;
+    padding: 1rem 1rem 2.5rem;
+    gap: 1rem;
+  }
+
+  /* ── Map ─────────────────────────────────────── */
+  .garden-view {
+    width: auto;
+    flex: 1 1 auto;
+  }
+
+  /* ── Sidebar ─────────────────────────────────── */
+  .sidebar {
+    position: static;
+    min-width: 0;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .info-card {
+    max-height: none;
+  }
+
+  /* ── Tasks ───────────────────────────────────── */
+  .tasks-view {
+    width: 100%;
+  }
+
+  .season-tabs {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap;
+    padding-bottom: 2px;
+  }
+
+  .season-tab {
+    white-space: nowrap;
+    padding: 0.45rem 0.85rem;
+    font-size: 0.82rem;
+  }
+
+  .season-section {
+    padding: 1rem;
+  }
+
+  /* ── Tasks footer ────────────────────────────── */
+  .tasks-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
