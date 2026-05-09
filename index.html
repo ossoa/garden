@@ -4,19 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Garden</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
 <header>
-  <div class="header-left">
-    <h1>My Garden</h1>
-  </div>
-  <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab('front',this)">Front Garden</button>
-    <button class="tab-btn"        onclick="switchTab('back',this)">Back Garden</button>
-    <span class="tab-divider"></span>
-    <button class="tab-btn tab-btn-tasks" onclick="switchTab('tasks',this)">Tasks</button>
+  <div class="header-inner">
+    <div class="header-left">
+      <h1>My Garden</h1>
+    </div>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('front',this)">Front Garden</button>
+      <button class="tab-btn"        onclick="switchTab('back',this)">Back Garden</button>
+      <span class="tab-divider"></span>
+      <button class="tab-btn tab-btn-tasks" onclick="switchTab('tasks',this)">Tasks</button>
+    </div>
   </div>
 </header>
 
@@ -24,6 +28,7 @@
 
   <!-- ══ FRONT GARDEN MAP ══════════════════════════════════════════ -->
   <div class="garden-view active" id="view-front">
+    <div class="map-card">
     <div class="legend" id="legend-front"></div>
     <div class="map-wrap">
       <svg viewBox="0 0 780 300" xmlns="http://www.w3.org/2000/svg">
@@ -186,11 +191,13 @@
               fill="#909080" font-style="italic">↓ street</text>
       </svg>
     </div>
+    </div><!-- /map-card -->
     <p class="map-hint">Click on a plant to see its details</p>
   </div>
 
   <!-- ══ BACK GARDEN MAP ═══════════════════════════════════════════ -->
   <div class="garden-view" id="view-back">
+    <div class="map-card">
     <div class="legend" id="legend-back"></div>
     <div class="map-wrap">
       <svg viewBox="0 0 530 690" xmlns="http://www.w3.org/2000/svg">
@@ -467,6 +474,7 @@
               fill="#807060" font-style="italic">← house →</text>
       </svg>
     </div>
+    </div><!-- /map-card -->
     <p class="map-hint">Click on a plant to see its details</p>
   </div>
 

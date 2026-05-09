@@ -263,17 +263,16 @@ async function renderCard(garden, id) {
   let baseCard = `
     <div class="plant-header">
       <div class="badge" style="background:${p.unknown ? '#8e8e8e' : p.foliage}">${id}</div>
-      <div class="plant-name${p.unknown ? ' is-unknown' : ''}">${p.name}</div>
+      <div class="plant-title">
+        <div class="plant-name${p.unknown ? ' is-unknown' : ''}">${p.name}</div>
+        <div class="plant-type">${p.type}</div>
+      </div>
     </div>
     <div class="names-block">
-      <div class="name-row"><span class="lang">EN</span>${enStr}</div>
-      <div class="name-row"><span class="lang">PL</span>${plStr}</div>
       <div class="name-row"><span class="lang">SE</span>${seStr}</div>
+      <div class="name-row"><span class="lang">PL</span>${plStr}</div>
     </div>
-    <div class="meta-label">Type</div>
-    <div class="meta-val">${p.type}</div>
-    <div class="meta-label">Notes</div>
-    <div class="meta-val">${p.desc}</div>
+    <div class="plant-desc">${p.desc}</div>
     ${unknownBlock}
   `;
 
@@ -287,44 +286,30 @@ async function renderCard(garden, id) {
     if (markdown) {
       const sections = parseGuideSections(markdown);
       const currentMonth = getCurrentMonth();
-      
-      let accordions = '';
-      
-      const currentMonthData = sections.monthlyCalendar[currentMonth];
-      if (currentMonthData) {
-        accordions += renderAccordion(
-          `This Month (${currentMonth})`,
-          marked.parse(currentMonthData),
-          true,
-          'this-month'
-        );
-      }
-      
+
+      // Monthly care rendered directly in the card
+      let monthlySection = '';
       if (Object.keys(sections.monthlyCalendar).length > 0) {
-        accordions += renderAccordion(
-          'Monthly Calendar',
-          renderMonthlyCalendar(sections.monthlyCalendar, currentMonth),
-          false
-        );
+        monthlySection = `
+          <div class="monthly-care-section">
+            <div class="meta-label">Monthly Care</div>
+            ${renderMonthlyCalendar(sections.monthlyCalendar, currentMonth)}
+          </div>`;
       }
-      
-      if (sections.pruning.trim()) {
+
+      // Remaining sections as collapsible accordions
+      let accordions = '';
+      if (sections.pruning.trim())
         accordions += renderAccordion('Pruning Guide', marked.parse(sections.pruning), false);
-      }
-      
-      if (sections.seasonal.trim()) {
+      if (sections.seasonal.trim())
         accordions += renderAccordion('Seasonal Care', marked.parse(sections.seasonal), false);
-      }
-      
-      if (sections.problems.trim()) {
+      if (sections.problems.trim())
         accordions += renderAccordion('Common Problems', marked.parse(sections.problems), false);
-      }
-      
-      if (sections.tips.trim()) {
+      if (sections.tips.trim())
         accordions += renderAccordion('Local Tips', marked.parse(sections.tips), false);
-      }
-      
-      infoCard.innerHTML = baseCard + `<div class="guide-accordions">${accordions}</div>`;
+
+      infoCard.innerHTML = baseCard + monthlySection +
+        (accordions ? `<div class="guide-accordions">${accordions}</div>` : '');
     } else {
       infoCard.innerHTML = baseCard;
     }
