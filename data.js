@@ -80,14 +80,14 @@ const DATA = {
       guide: "plants/boxwood.md"
     },
     4: {
-      name: "Unknown plant",
-      pl:   null,
-      se:   null,
-      type: "Unknown",
-      desc: "Not yet identified. Climbing plant with yellow flowers on the terrace wall.",
+      name: "Climbing Hydrangea?",
+      pl:   "Hortensja pnąca?",
+      se:   "Klätterhortensia?",
+      type: "Climbing shrub (unconfirmed)",
+      desc: "Possibly Hydrangea petiolaris. Vigorous climber on the terrace wall with red new stems and serrated leaves. Previously noted as having yellow flowers — needs confirmation when blooming (June–July).",
       shape: "climber",
       foliage: "#4a7a3a",
-      accent: "#f5d830",
+      accent: "#f5f5f0",
       unknown: true
     },
     5: {

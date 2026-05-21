@@ -28,13 +28,13 @@ A static garden site and set of Obsidian notes for a private garden in Stockholm
 | 1 | English Ivy (pot) | Bluszcz pospolity | Murgröna |
 | 2 | Schersmin (Mock Orange) | Jaśminowiec wonny | Schersmin |
 | 3 | Boxwood (pot) | Bukszpan | Buxbom |
-| 4 | **Unknown** — climbing plant with yellow flowers on terrace wall | — | — |
+| 4 | **Climbing Hydrangea?** — unconfirmed; climber on terrace wall, red stems, serrated leaves; previously noted yellow flowers — check June–July | Hortensja pnąca? | Klätterhortensia? |
 | 5 | Privet | Ligustr pospolity | Liguster |
 | 6 | Black Elder | Bez czarny | Fläder |
 | 7 | Redcurrant Bush | Porzeczka czerwona | Röda vinbär |
 | 8 | Forsythia | Forsycja | Forsythia |
 
-Back plant 4 is still unidentified.
+Back plant 4 is tentatively identified as Climbing Hydrangea but needs flower confirmation (June–July).
 
 ## Conventions
 
