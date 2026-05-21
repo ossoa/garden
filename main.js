@@ -256,8 +256,10 @@ async function renderCard(garden, id) {
                      : `<span class="name-none">not identified yet</span>`;
   const enStr = p.unknown ? `<span class="name-none">—</span>` : p.name;
 
-  const unknownBlock = p.unknown
+  const unknownBlock = p.unknown && !p.guide
     ? `<div class="unknown-note">This plant has not been identified yet.<br>Its name will be updated once known.</div>`
+    : p.unknown && p.guide
+    ? `<div class="unknown-note">Identification is tentative — check flower colour to confirm.</div>`
     : '';
 
   let baseCard = `
@@ -278,7 +280,7 @@ async function renderCard(garden, id) {
 
   const infoCard = document.getElementById('info-card');
   
-  if (p.guide && !p.unknown) {
+  if (p.guide) {
     infoCard.innerHTML = baseCard + '<div class="guide-loading">Loading care guide...</div>';
     
     const markdown = await fetchGuide(p.guide);
