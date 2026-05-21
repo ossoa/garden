@@ -88,6 +88,7 @@ const DATA = {
       shape: "climber",
       foliage: "#4a7a3a",
       accent: "#f5f5f0",
+      guide: "plants/climbing-hydrangea.md",
       unknown: true
     },
     5: {
