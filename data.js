@@ -91,15 +91,15 @@ const DATA = {
       unknown: true
     },
     5: {
-      name: "Unknown plant",
-      pl:   null,
-      se:   null,
-      type: "Unknown",
-      desc: "Not yet identified. Tall hedge running along both side borders of the back garden.",
+      name: "Privet",
+      pl:   "Ligustr pospolity",
+      se:   "Liguster",
+      type: "Semi-evergreen hedge",
+      desc: "Ligustrum vulgare. Dense hedging shrub running along both side borders. Small glossy oval leaves, very tolerant of pruning and shade.",
       shape: "hedge",
       foliage: "#4a7a3a",
-      accent: "#5a8a4a",
-      unknown: true
+      accent: "#f5f5f0",
+      guide: "plants/privet.md"
     },
     6: {
       name: "Black Elder",

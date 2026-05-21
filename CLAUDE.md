@@ -29,12 +29,12 @@ A static garden site and set of Obsidian notes for a private garden in Stockholm
 | 2 | Schersmin (Mock Orange) | Jaśminowiec wonny | Schersmin |
 | 3 | Boxwood (pot) | Bukszpan | Buxbom |
 | 4 | **Unknown** — climbing plant with yellow flowers on terrace wall | — | — |
-| 5 | **Unknown** — tall hedge along side borders | — | — |
+| 5 | Privet | Ligustr pospolity | Liguster |
 | 6 | Black Elder | Bez czarny | Fläder |
 | 7 | Redcurrant Bush | Porzeczka czerwona | Röda vinbär |
 | 8 | Forsythia | Forsycja | Forsythia |
 
-Back plants 4 and 5 are still unidentified.
+Back plant 4 is still unidentified.
 
 ## Conventions
 
@@ -66,7 +66,7 @@ Two products in use: **barkmull** (fine composted bark, nutritive) and **täckba
 | Forsythia | Täckbark Brun | Large established shrub |
 | Schersmin | Täckbark Brun | Large established shrub |
 | Unknown climbing (back 4) | Täckbark Brun | Low-maintenance coverage |
-| Unknown hedge (back 5) | Täckbark Brun | Border coverage |
+| Privet (back 5) | Täckbark Brun | Border coverage |
 | Hydrangea | Barkmull | Needs moisture retention and nutrients |
 | Redcurrant | Barkmull | Shallow roots; clear grass first (50 cm radius) |
 | Black Elder | Barkmull | Benefits from organic breakdown |
