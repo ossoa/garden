@@ -80,16 +80,15 @@ const DATA = {
       guide: "plants/boxwood.md"
     },
     4: {
-      name: "Climbing Hydrangea?",
-      pl:   "Hortensja pnąca?",
-      se:   "Klätterhortensia?",
-      type: "Climbing shrub (unconfirmed)",
-      desc: "Possibly Hydrangea petiolaris. Vigorous climber on the terrace wall with red new stems and serrated leaves. Previously noted as having yellow flowers — needs confirmation when blooming (June–July).",
+      name: "Climbing Hydrangea",
+      pl:   "Hortensja pnąca",
+      se:   "Klätterhortensia",
+      type: "Climbing shrub",
+      desc: "Hydrangea anomala petiolaris. Vigorous self-clinging climber on the terrace wall with distinctive red new stems and serrated leaves. White lacecap flowers appear in June–July.",
       shape: "climber",
       foliage: "#4a7a3a",
       accent: "#f5f5f0",
-      guide: "plants/climbing-hydrangea.md",
-      unknown: true
+      guide: "plants/climbing-hydrangea.md"
     },
     5: {
       name: "Privet",

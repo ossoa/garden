@@ -1,10 +1,10 @@
 # Climbing Hydrangea
 
-**Scientific name:** Hydrangea petiolaris (unconfirmed)  
+**Scientific name:** Hydrangea anomala petiolaris  
 **Swedish:** Klätterhortensia  
 **Polish:** Hortensja pnąca
 
-> **Note:** This identification is tentative based on leaf shape, red new stems, and growth habit. The plant was previously described as having yellow flowers, which would not match climbing hydrangea (white lacecap flowers). Confirm flower colour in June–July.
+> **Confirmed June 2026:** White flowers on elongated panicles observed, consistent with Hydrangea anomala petiolaris. Red new stems and serrated leaves also match.
 
 ## Basic Information
 
